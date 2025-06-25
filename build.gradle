@@ -48,14 +48,19 @@ task dockerBuild(type: Exec) {
     group = 'docker'
     description = 'Build Docker image after building the JAR'
     
-    commandLine 'docker', 'build', '--build-arg', "JAR_VERSION=${project.version}", '-t', 'aibackend', '.'
+    commandLine 'docker', 'build', '--build-arg', "JAR_VERSION=${project.version}", 
+                '-t', 'huangjien/aibackend:latest', 
+                '-t', "huangjien/aibackend:${project.version}", 
+                '.'
     
     doFirst {
         println "Building Docker image with JAR version: ${project.version}"
     }
     
     doLast {
-        println 'Docker image "aibackend" built successfully!'
-        println 'Run with: docker run -p 8080:8080 aibackend'
+        println 'Docker image "aibackend" built successfully with tags:'
+        println "  - huangjien/aibackend:latest"
+        println "  - huangjien/aibackend:${project.version}"
+        println 'Run with: docker run -p 8080:8080 aibackend:latest'
     }
 }

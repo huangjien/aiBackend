@@ -128,6 +128,41 @@ The test suite follows Spring Boot testing best practices:
 - **Test Profiles**: Separate configuration for test environment
 - **Test Database**: Uses H2 in-memory database for testing
 
+## CI/CD with GitHub Actions
+
+The project includes a GitHub Actions workflow that automatically:
+
+1. **Builds** the Spring Boot application using Gradle
+2. **Creates** Docker images with multiple tags
+3. **Pushes** images to Docker Hub registry
+4. **Scans** for security vulnerabilities using Trivy
+
+### Workflow Triggers
+
+- **Push to main/master**: Builds and pushes images
+- **Tags (v*)**: Creates version-specific releases
+- **Pull Requests**: Builds and tests (no push)
+
+### Required Secrets
+
+To use the GitHub Actions workflow, configure these repository secrets:
+
+```
+DOCKER_USERNAME=your-dockerhub-username
+DOCKER_PASSWORD=your-dockerhub-password-or-token
+```
+
+### Docker Image Tags
+
+The workflow automatically creates multiple tags:
+- `latest` - Latest build from main branch
+- `<version>` - Semantic version tags (e.g., `v1.0.0`)
+- `<branch>` - Branch-specific tags
+
+### Security Scanning
+
+Trivy vulnerability scanner runs automatically and uploads results to GitHub Security tab.
+
 ## Troubleshooting
 
 ### Gradle Test Issues
@@ -152,3 +187,6 @@ If Docker build fails:
 - MCP (Model Context Protocol) client and server support included
 - Test dependencies include JUnit 5, Mockito, and Spring Boot Test
 - Tests are designed to work with or without Gradle's test task
+- GitHub Actions workflow automates CI/CD pipeline with Docker image building and pushing
+- Multi-platform Docker images (linux/amd64, linux/arm64) are built automatically
+- Security vulnerability scanning is integrated into the CI/CD pipeline
