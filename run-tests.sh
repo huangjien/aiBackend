@@ -27,17 +27,3 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Compilation successful!"
-echo ""
-echo "Test classes compiled and ready for execution."
-echo "Test files created:"
-echo "  - MainTest.java (Spring context loading test)"
-echo "  - MainApplicationTest.java (Main method and annotation tests)"
-echo "  - WebIntegrationTest.java (Web integration tests)"
-echo "  - TestConfiguration.java (Test configuration)"
-echo ""
-echo "To run tests manually, you can use your IDE's test runner or"
-echo "execute individual test classes with JUnit Platform Console Launcher."
-echo ""
-echo "Note: Due to Gradle compatibility issues, automatic test execution"
-echo "may not work. The test structure and classes are properly set up"
-echo "for manual execution or IDE-based testing."

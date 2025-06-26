@@ -40,7 +40,32 @@ dependencyManagement {
     }
 }
 
-// Test configuration - manual execution may be required due to Gradle compatibility issues
+// Test Coverage Configuration
+// Note: JaCoCo plugin has compatibility issues with Gradle 8.13 and Java 24
+// 
+// ALTERNATIVE TEST COVERAGE SOLUTIONS:
+// 1. IntelliJ IDEA: Run tests with "Run with Coverage" option
+//    - Right-click on test class/package -> "Run with Coverage"
+//    - Generates detailed coverage reports in IDE
+//
+// 2. External CI/CD Coverage Tools:
+//    - SonarQube: Add sonarqube plugin and configure coverage
+//    - Codecov: Use codecov-action in GitHub Actions
+//    - Coveralls: Use coveralls-gradle-plugin
+//
+// 3. Manual JaCoCo Setup (if downgrading to Java 21):
+//    - Add 'id "jacoco"' to plugins block
+//    - Configure jacocoTestReport and jacocoTestCoverageVerification tasks
+//
+// 4. Maven Alternative:
+//    - Convert to Maven project for better JaCoCo support
+//    - Use maven-surefire-plugin with jacoco-maven-plugin
+//
+// CURRENT SETUP:
+// - Tests run with standard Gradle test task
+// - HTML and XML reports generated in build/reports/tests/test/
+// - Run: ./gradlew test
+// - View report: open build/reports/tests/test/index.html
 
 // Docker build task
 task dockerBuild(type: Exec) {
