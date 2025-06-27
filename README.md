@@ -8,7 +8,9 @@ A Spring Boot application with AI capabilities using Spring AI framework.
 src/
 ├── main/
 │   ├── java/com/huangjien/aiBackend/
-│   │   └── Main.java                    # Main Spring Boot application class
+│   │   ├── Main.java                    # Main Spring Boot application class
+│   │   └── controller/
+│   │       └── RestApiController.java  # REST API endpoints
 │   └── resources/
 │       └── application.properties       # Application configuration
 └── test/
@@ -16,7 +18,10 @@ src/
     │   ├── MainTest.java                # Basic Spring context test
     │   ├── MainApplicationTest.java     # Main method and annotation tests
     │   ├── WebIntegrationTest.java      # Web layer integration tests
-    │   └── TestConfiguration.java       # Test-specific configuration (TestConfig class)
+    │   ├── TestConfig.java              # Test-specific configuration class
+    │   └── controller/
+    │       ├── RestApiControllerTest.java           # Unit tests for REST API controller
+    │       └── RestApiControllerIntegrationTest.java # Integration tests for REST API endpoints
     └── resources/
         └── application-test.properties  # Test configuration
 ```
@@ -71,27 +76,29 @@ The project includes comprehensive unit tests:
 1. **MainTest.java** - Tests Spring application context loading
 2. **MainApplicationTest.java** - Tests main method execution and Spring Boot annotations
 3. **WebIntegrationTest.java** - Integration tests for web layer
-4. **TestConfiguration.java** - Test-specific bean configurations (TestConfig class)
+4. **TestConfig.java** - Test-specific bean configurations
+5. **RestApiControllerTest.java** - Unit tests for REST API controller
+6. **RestApiControllerIntegrationTest.java** - Integration tests for REST API endpoints with type-safe operations
 
 ### Running Tests
 
-Due to Gradle compatibility issues with the current setup, tests may need to be run manually:
+The project now supports full Gradle test execution with Java 24 compatibility:
 
 ```bash
-# Use the provided test runner script (recommended)
-./run-tests.sh
+# Run all tests
+./gradlew test
 
-# Or compile test classes directly
+# Run specific test class
+./gradlew test --tests RestApiControllerIntegrationTest
+
+# Compile test classes
 ./gradlew compileTestJava
 
-# Run tests manually with Java (if needed)
-java -cp "build/classes/java/test:build/classes/java/main:$(./gradlew -q printClasspath)" \
-  org.junit.platform.console.ConsoleLauncher \
-  --class-path build/classes/java/test \
-  --scan-class-path
+# Use the provided test runner script (alternative)
+./run-tests.sh
 ```
 
-**Note**: The `run-tests.sh` script provides an easy way to compile and verify the test structure. Tests can also be executed individually using your IDE's test runner.
+**Note**: All Gradle compatibility issues have been resolved with the upgrade to Gradle 8.14. Tests can be executed using standard Gradle commands or individually using your IDE's test runner.
 
 ### Test Features
 
@@ -165,11 +172,11 @@ Trivy vulnerability scanner runs automatically and uploads results to GitHub Sec
 
 ## Troubleshooting
 
-### Gradle Test Issues
-If you encounter Gradle test execution issues:
-1. Use the provided `run-tests.sh` script
-2. Run tests individually in your IDE
-3. Ensure Java 21 is properly configured
+### Java Compatibility
+The project is compatible with Java 21-24:
+1. Gradle 8.14 provides Java 24 support
+2. All compilation and test execution issues have been resolved
+3. Type-safe REST template operations eliminate unchecked warnings
 4. Tests use H2 in-memory database, so no external database setup required
 
 ### Docker Build
@@ -180,13 +187,14 @@ If Docker build fails:
 
 ## Notes
 
-- The application uses Java 21
+- The application uses Java 21 (compatible with Java 24)
+- Gradle 8.14 for build automation with Java 24 compatibility
 - PostgreSQL is configured for data persistence
 - H2 in-memory database is used for testing
 - AI capabilities are provided through Spring AI with Ollama integration
 - MCP (Model Context Protocol) client and server support included
 - Test dependencies include JUnit 5, Mockito, and Spring Boot Test
-- Tests are designed to work with or without Gradle's test task
+- All tests use type-safe REST template operations with proper generic handling
 - GitHub Actions workflow automates CI/CD pipeline with Docker image building and pushing
 - Multi-platform Docker images (linux/amd64, linux/arm64) are built automatically
 - Security vulnerability scanning is integrated into the CI/CD pipeline
